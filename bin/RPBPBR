@@ -76,7 +76,8 @@ fi
 BIN=`dirname $FILE`
 DATA=$BIN/../data/
 PATH=$BIN:$PATH
-THREAD=4
+#Dynamically check for available CPU threads and only use 90% of available resources; calculated with basic calculator and correctly rounded with awk to accommodate different CPU counts
+THREAD=$(echo "$(sysctl -n hw.ncpu) * 1.8" | bc | awk '{print int($1+0.5)}')
 
 exe_file bowtie2 
 exe_file bowtie2-build 
