@@ -102,7 +102,7 @@ echo "STEP 1: 5'/3' end trimming..."
 for i in 140 135 130 125 120 115 110 105 100 95 90 85 80 75 70 65 60 55 50 45 40 35 30; do
 
   j=`expr $i + 5`
-  bowtie2-build -q --threads $THREAD ${OUTPRE}.${j}_remain.fa ${OUTPRE}.${j}_remain
+  bowtie2-build --large-index -q --threads $THREAD ${OUTPRE}.${j}_remain.fa ${OUTPRE}.${j}_remain
 
   bowtie2 -f --very-sensitive --score-min L,-1.6,-1.6 --mp 5 --rdg 4,2 --rfg 4,2 -a -p $THREAD -x ${OUTPRE}.${j}_remain -U $DATA/adapters_${i}.fa 2>/dev/null | samtools view -Sb - > ${OUTPRE}_adapter_${i}.bam 2>/dev/null
   samtools view ${OUTPRE}_adapter_${i}.bam | adapter_check_trim.pl ${OUTPRE}.${j}_remain.fa /dev/stdin ${OUTPRE}_adapter_${i}_clean.fa ${OUTPRE}.${i}_remain.fa > ${OUTPRE}_adapter_${i}.adapter_check_trim.info
@@ -111,7 +111,7 @@ done
 echo "STEP 2: segment mapping..."
 
 cat ${OUTPRE}_adapter_*_clean.fa > ${OUTPRE}_clean.fa
-bowtie2-build -q --threads $THREAD ${OUTPRE}_clean.fa ${OUTPRE}_clean
+bowtie2-build --large-index -q --threads $THREAD ${OUTPRE}_clean.fa ${OUTPRE}_clean
 bowtie2 -f --very-sensitive --score-min L,-1.6,-1.6 --mp 5 --rdg 4,2 --rfg 4,2 -a -p $THREAD -x ${OUTPRE}_clean -U $DATA/segements.fa 2>/dev/null | samtools view -Sb - > ${OUTPRE}_clean.segements.bam 2>/dev/null
 
 echo "STEP 3: barcode assembly..."
