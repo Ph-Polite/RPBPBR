@@ -8,6 +8,9 @@ RPBPBR <input.fasta/fastq> <out.prefix> <type|fasta/fastq> [keep-temp]
 * <type|fasta/fastq>   required, the format of the PacBio read file, only can be fasta or fastq, other formats not acceptable. 
 * [keep-temp]          optional, if not specified or with value 0, the temporary directory created during the process will be removed after the process is done; otherwise, it will be kept. 
 
+## Update
+This version of RPBPBR includes dynamic performance scaling on MacOS by running index building and alignment on all available cores (only 1 before), as well as an "RPBPBR-L" version, which builds a large bowtie index for advanced datasets.
+Furthermore, best performance of this script was evaluated to be at 30K reads per input file. It is faster to iterate the script on many 30K-size FASTA/Q files, than running it on one concatenated large file.
 
 ## Contact
 Xi Wang (xi dot wang at dkfz dot de) OR (xiwang at njmu dot edu dot cn)
